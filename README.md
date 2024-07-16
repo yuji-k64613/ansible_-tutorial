@@ -23,22 +23,6 @@ ansible --version
 - 「env-setup」を使用したセットアップは、本来のAnsibleセットアップ方法とは異なる(Ansible自体の開発用)。
 - sshpassは、今回説明するsshの認証方式を使用する場合に必要となる。
 
-## ■初期ディレクトリ作成
-```
-mkdir group_vars
-mkdir host_vars
-mkdir roles
-mkdir roles/common
-mkdir roles/common/tasks
-mkdir roles/web
-mkdir roles/web/tasks
-mkdir roles/web/handlers
-mkdir roles/web/templates
-mkdir roles/web/files
-mkdir roles/web/vars
-mkdir roles/web/meta
-```
-
 ## ■最小構成でのPlaybookの実行
 
 ### Playbook作成
@@ -48,7 +32,6 @@ cat << "EOF" > playbook.yml
 - name: hello, world
   hosts:
     - 127.0.0.1
-
   vars:
     ansible_user: root
     ansible_password: vagrant
@@ -81,6 +64,22 @@ PLAY RECAP *********************************************************************
 127.0.0.1                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 - 以降では、Best Practicesを元にAnsibleの使い方を説明してく。
+
+## ■初期ディレクトリ作成
+```
+mkdir group_vars
+mkdir host_vars
+mkdir roles
+mkdir roles/common
+mkdir roles/common/tasks
+mkdir roles/web
+mkdir roles/web/tasks
+mkdir roles/web/handlers
+mkdir roles/web/templates
+mkdir roles/web/files
+mkdir roles/web/vars
+mkdir roles/web/meta
+```
 
 ## ■hello, world
 
