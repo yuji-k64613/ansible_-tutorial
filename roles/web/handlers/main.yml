@@ -1,0 +1,6 @@
+---
+- name: condition_handler
+  debug:
+    msg: "listned condition_handler"
+  listen:
+    - condition_handler

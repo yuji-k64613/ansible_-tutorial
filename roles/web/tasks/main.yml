@@ -1,0 +1,29 @@
+---
+- name: test
+  debug:
+    msg: "hello, world: {{ var1 }}, {{ var2 }}, {{ item }}"
+  loop: "{{ list }}"
+- name: test register
+  command: /bin/false
+  register: result
+  ignore_errors: True
+- name: test condition
+  debug:
+    msg: "condition is false: {{ result.failed }}"
+  when: result.failed == True
+- name: test handlers1
+  command: /bin/true
+  notify:
+    - condition_handler
+- name: test handlers2
+  command: /bin/true
+  notify:
+    - condition_handler
+- name: test template
+  template:
+    src: sample.conf.j2
+    dest: /tmp/sample.conf
+- name: test script
+  script: sample.sh sample.conf
+  args:
+    chdir: /tmp

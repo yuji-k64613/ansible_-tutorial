@@ -1,0 +1,8 @@
+---
+all:
+  children:
+    webservers:
+      hosts:
+        host1:
+          ansible_host: 127.0.0.1
+          ansible_password: "{{password}}"
