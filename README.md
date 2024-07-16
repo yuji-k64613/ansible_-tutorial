@@ -23,7 +23,7 @@ ansible --version
 - 「env-setup」を使用したセットアップは、本来のAnsibleセットアップ方法とは異なる(Ansible自体の開発用)。
 - sshpassは、今回説明するsshの認証方式を使用する場合に必要となる。
 
-## ■初期ディレクトリ作成(任意のディレクトリ)
+## ■初期ディレクトリ作成
 ```
 mkdir group_vars
 mkdir host_vars
@@ -50,6 +50,8 @@ cat << EOF > roles/common/tasks/main.yml
     msg: "hello, common"
 EOF
 ```
+- debugモジュールを使用した例。
+- main.yml内に複数のモジュールを記述することが可能。
 
 ### webロールのPlaybook作成
 ```
@@ -71,6 +73,7 @@ cat << EOF > webservers.yml
     - web
 EOF
 ```
+- webserversに属しているホストに対してrolesを実行する(webserversに属しているホストはinventory.ymlに定義する(後述))。
 - common、webロールを実行するように定義する。
 
 ### site.yml作成
@@ -97,7 +100,10 @@ all:
           ansible_password: vagrant
 EOF
 ```
-- ホストを定義する。
+- ホスト、ユーザ、パスワードを定義する。
+- webserversに属しているホストを定義する。
+- hosts:配下に複数のホストを定義可能。
+- ユーザは、ホストにかかわらずrootを使用する。
 
 ### 実行
 ```
@@ -134,9 +140,9 @@ cat << EOF > host_vars/host1.yml
 password: vagrant
 EOF
 ```
-- host_varsディレクト配下の変数は、対応するホストのみで有効となる。
+- host_varsディレクト配下の変数は、対応するホスト(host1)のみで有効となる。
 
-### inventoryからパスワードを参照
+### inventoryの修正(パスワードを外部定義)
 ```
 cat << EOF > inventory.yml
 ---
@@ -156,7 +162,7 @@ EOF
 ```
 ansible-vault encrypt host_vars/host1.yml
 ```
-パスワードを聞かれるので、「password」と入力する
+パスワードを聞かれるので、「password」と入力する。
 
 ### 暗号化後の変数確認
 ```
