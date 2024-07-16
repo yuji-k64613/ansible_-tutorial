@@ -20,7 +20,7 @@ source ./hacking/env-setup
 sudo ln -s /usr/bin/python3 /usr/bin/python
 ansible --version
 ```
-- 「env-setup」を使用したセットアップは、本来のAnsibleとは異なる(Ansible自体の開発用)。
+- 「env-setup」を使用したセットアップは、本来のAnsibleセットアップ方法とは異なる(Ansible自体の開発用)。
 - sshpassは、今回説明するsshの認証方式を使用する場合に必要となる。
 
 ## ■初期ディレクトリ作成(任意のディレクトリ)
@@ -50,6 +50,7 @@ cat << EOF > roles/common/tasks/main.yml
     msg: "hello, common"
 EOF
 ```
+
 ### webロールのPlaybook作成
 ```
 cat << EOF > roles/web/tasks/main.yml
@@ -70,6 +71,7 @@ cat << EOF > webservers.yml
     - web
 EOF
 ```
+- common、webロールを実行するように定義する。
 
 ### site.yml作成
 ```
@@ -78,6 +80,7 @@ cat << EOF > site.yml
 - import_playbook: webservers.yml
 EOF
 ```
+- site.ymlが最上位のPlaybookとなる
 
 ### inventory作成
 ```
@@ -92,6 +95,7 @@ all:
           ansible_password: vagrant
 EOF
 ```
+- ホストを定義する。
 
 ### 実行
 ```
@@ -148,6 +152,7 @@ EOF
 ansible-vault encrypt host_vars/host1.yml
 ```
 パスワードを聞かれるので、「password」と入力する
+- host_varsディレクト配下の変数は、対応するホストのみで有効となる。
 
 ### 暗号化後の変数確認
 ```
@@ -172,13 +177,14 @@ ansible-playbook -i inventory.yml site.yml
 PLAY [webservers] **************************************************************
 ERROR! Attempting to decrypt but no vault secrets found
 ```
-エラーとなる
+暗号化を復号するための情報(password)が無いためエラーとなる
 
 ### 実行
 ```
 echo password > password.txt
 ansible-playbook -i inventory.yml site.yml --vault-password-file password.txt
 ```
+- password.txtファイルは、リポジトリに登録しないこと(復号化できてしまうため)。
 
 ### 実行結果
 ```
@@ -327,6 +333,7 @@ cat << EOF > roles/web/tasks/main.yml
     - condition_handler
 EOF
 ```
+- condition_handlerが一度でもnotifyされると、対応するhandlerが一度実行される。
 
 ### 実行
 ```
@@ -482,6 +489,7 @@ dependencies:
   - common
 EOF
 ```
+- webロールは、commonに依存するように定義する。
 
 ### webservers.ymlの修正
 ```
@@ -492,6 +500,7 @@ cat << EOF > webservers.yml
     - web
 EOF
 ```
+- commonの設定を削除する(依存関係があるため不要)。
 
 ### 実行
 ```
