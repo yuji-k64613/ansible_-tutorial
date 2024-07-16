@@ -489,6 +489,7 @@ ls -ltr /tmp
 ### 依存関係を定義
 ```
 cat << EOF > roles/web/meta/main.yml
+---
 dependencies:
   - common
 EOF
