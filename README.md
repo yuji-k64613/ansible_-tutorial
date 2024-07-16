@@ -1,5 +1,11 @@
 # Ansible Tutorial
 
+## ■はじめに
+
+AnsibleのBest Practicesを元にAnsibleを習得するためのチュートリアルです。
+
+Best Practices: https://docs.ansible.com/ansible/2.8/user_guide/playbooks_best_practices.html#directory-layout
+
 ## ■初期ディレクトリ作成
 ```
 mkdir group_vars
