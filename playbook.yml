@@ -1,0 +1,13 @@
+---
+- name: hello, world
+  hosts:
+    - 127.0.0.1
+
+  vars:
+    ansible_user: root
+    ansible_password: vagrant
+
+  tasks:
+  - name: test
+    debug:
+      msg: "hello, world"

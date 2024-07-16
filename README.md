@@ -39,6 +39,49 @@ mkdir roles/web/vars
 mkdir roles/web/meta
 ```
 
+## ■最小構成でのPlaybookの実行
+
+### Playbook作成
+```
+cat << "EOF" > playbook.yml
+---
+- name: hello, world
+  hosts:
+    - 127.0.0.1
+
+  vars:
+    ansible_user: root
+    ansible_password: vagrant
+
+  tasks:
+  - name: test
+    debug:
+      msg: "hello, world"
+EOF
+```
+
+### 実行
+```
+ansible-playbook playbook.yml
+```
+
+### 実行結果
+```
+PLAY [hello, world] ************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [127.0.0.1]
+
+TASK [test] ********************************************************************
+ok: [127.0.0.1] => {
+    "msg": "hello, world"
+}
+
+PLAY RECAP *********************************************************************
+127.0.0.1                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```
+- 以降では、Best Practicesを元にAnsibleの使い方を説明してく。
+
 ## ■hello, world
 
 ### commonロールのPlaybook作成
@@ -51,7 +94,9 @@ cat << EOF > roles/common/tasks/main.yml
 EOF
 ```
 - debugモジュールを使用した例。
+- 「name:」には任意の文字列を指定可能(一意である必要も無い)。
 - main.yml内に複数のモジュールを記述することが可能。
+- 「---」は、ymlファイルであることを明示的に表している。
 
 ### webロールのPlaybook作成
 ```
@@ -225,6 +270,7 @@ cat << EOF > group_vars/all.yml
 var1: TEST1
 EOF
 ```
+- group_vars/all.ymlの変数は、全てのファイルから参照可能。
 
 ### Playbookの修正
 ```
@@ -262,7 +308,7 @@ PLAY RECAP *********************************************************************
 host1                      : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ```
 
-## ■ループ
+## ■繰り返し
 
 ### 変数を定義
 ```
@@ -274,6 +320,7 @@ list:
   - BAR
 EOF
 ```
+- roles/web/vars/main.ymlの変数は、ロールwebのみから参照可能。
 
 ### Playbookの修正
 ```
