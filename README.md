@@ -20,6 +20,8 @@ source ./hacking/env-setup
 sudo ln -s /usr/bin/python3 /usr/bin/python
 ansible --version
 ```
+- 「env-setup」を使用したセットアップは、本来のAnsibleとは異なる(Ansible自体の開発用)。
+- sshpassは、今回説明するsshの認証方式を使用する場合に必要となる。
 
 ## ■初期ディレクトリ作成(任意のディレクトリ)
 ```
