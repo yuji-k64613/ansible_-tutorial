@@ -87,6 +87,8 @@ EOF
 cat << EOF > inventory.yml
 ---
 all:
+  vars:
+    ansible_user: root
   children:
     webservers:
       hosts:
@@ -132,12 +134,15 @@ cat << EOF > host_vars/host1.yml
 password: vagrant
 EOF
 ```
+- host_varsディレクト配下の変数は、対応するホストのみで有効となる。
 
 ### inventoryからパスワードを参照
 ```
 cat << EOF > inventory.yml
 ---
 all:
+  vars:
+    ansible_user: root
   children:
     webservers:
       hosts:
@@ -152,7 +157,6 @@ EOF
 ansible-vault encrypt host_vars/host1.yml
 ```
 パスワードを聞かれるので、「password」と入力する
-- host_varsディレクト配下の変数は、対応するホストのみで有効となる。
 
 ### 暗号化後の変数確認
 ```
@@ -476,8 +480,8 @@ host1                      : ok=4    changed=1    unreachable=0    failed=0    s
 ls -ltr /tmp
 ```
 ```
--rw-rw-r-- 1 vagrant vagrant    10 Jul 16 02:29 sample.conf.bak
--rw-rw-r-- 1 vagrant vagrant    10 Jul 16 02:29 sample.conf
+-rw-r--r-- 1 root    root       10 Jul 16 06:28 sample.conf.bak
+-rw-r--r-- 1 root    root       10 Jul 16 06:28 sample.conf
 ```
 
 ## ■meta
