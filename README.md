@@ -6,7 +6,22 @@ AnsibleのBest Practicesを元にAnsibleを習得するためのチュートリ�
 
 Best Practices: https://docs.ansible.com/ansible/2.8/user_guide/playbooks_best_practices.html#directory-layout
 
-## ■初期ディレクトリ作成
+## ■Ansibleのセットアップ(参考)
+```
+cd /vagrant
+git clone https://github.com/ansible/ansible.git
+cd /vagrant/ansible
+sudo yum upgrade -y
+sudo yum install -y python3.12
+sudo yum install -y python3.12-pip
+sudo yum install -y sshpass
+python3.12 -m pip install --user -r ./requirements.txt
+source ./hacking/env-setup
+sudo ln -s /usr/bin/python3 /usr/bin/python
+ansible --version
+```
+
+## ■初期ディレクトリ作成(任意のディレクトリ)
 ```
 mkdir group_vars
 mkdir host_vars
