@@ -686,3 +686,42 @@ PLAY RECAP *********************************************************************
 host1                      : ok=10   changed=4    unreachable=0    failed=0    s
 kipped=0    rescued=0    ignored=1
 ```
+
+## ■ログ取得
+
+### ログ作成
+```
+touch /tmp/sample1_$(date +'%Y%m%d').log
+touch /tmp/sample2_$(date +'%Y%m%d').log
+```
+
+### Playbookの修正
+```
+cat << "EOF" > roles/web/tasks/main.yml
+---
+- name: test ls
+  shell: ls -1 /tmp/sample*.log
+  register: result
+- name: test fetch
+  fetch:
+    src: "{{ item }}"
+    dest: evidence/{{ role_name }}/{{ inventory_hostname }}/
+    flat: yes
+  with_items: "{{ result.stdout_lines }}"
+EOF
+```
+
+### 実行
+```
+ansible-playbook -i inventory.yml site.yml --vault-password-file password.txt
+```
+
+### 実行結果
+```
+find evidence -type f
+```
+
+```
+evidence/web/host1/sample1_20240728.log
+evidence/web/host1/sample2_20240728.log
+```
